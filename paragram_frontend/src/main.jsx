@@ -44,6 +44,22 @@ const router = createBrowserRouter([
         path: "post",
         element: <PostCard />,
       },
+      {
+        path: "new",
+        element: <NewPost />,
+      },
+      {
+        path: "activity",
+        element: <Activity />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "postdetail/:id",
+        element: <PostDetailPage />,
+      },
     ],
   },
 ]);

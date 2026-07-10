@@ -4,7 +4,7 @@ import { Home, BookOpen, PlusCircle, Bell, User } from 'lucide-react';
 export default function BottomNav() {
   const navItems = [
     { id: 'home', label: 'Home', icon: Home, to: '/' },
-    { id: 'confessions', label: 'Confessions', icon: BookOpen, to: '/post' },
+    // { id: 'confessions', label: 'Confessions', icon: BookOpen, to: '/post' },
     { id: 'new', label: 'New', icon: PlusCircle, to: '/new' },
     { id: 'activity', label: 'Activity', icon: Bell, to: '/activity' },
     { id: 'profile', label: 'Profile', icon: User, to: '/profile' },

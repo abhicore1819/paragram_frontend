@@ -3,7 +3,7 @@ export default function Activity() {
     {
       id: 1,
       type: "reaction",
-      user: "Anonymous",
+      user: "adtiyax",
       action: "reacted with 💔 Empathy",
       confession: "Your confession about family",
       timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
@@ -11,7 +11,7 @@ export default function Activity() {
     {
       id: 2,
       type: "reply",
-      user: "DarkListener",
+      user: "harsh_29",
       action: "replied to your confession",
       confession: "About personal struggles",
       timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
@@ -19,7 +19,7 @@ export default function Activity() {
     {
       id: 3,
       type: "reaction",
-      user: "SilentEcho",
+      user: "lucky_shooter12",
       action: "reacted with 🤝 No Judgment",
       confession: "Your recent confession",
       timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),

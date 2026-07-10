@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { ThumbsUp, MessageCircle, Hand } from "lucide-react";
+import { ThumbsUp, MessageCircle, Hand, NavigationOff } from "lucide-react";
 import user_pfp from "../assets/user_pfp.jpeg";
+import { useNavigate } from "react-router-dom";
 export default function PostCard({ post }) {
+  const navigate = useNavigate();
   const [is_liked, setIsLiked] = useState(false);
   const [is_followed, setIsFollowed] = useState(false);
   const HandleLike = () => {
@@ -20,7 +22,10 @@ export default function PostCard({ post }) {
     }
   };
   return (
-    <div className="group bg-[#0f0f0f] border border-gray-700 rounded-xl p-4 mb-12 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-gray-900/20 backdrop-blur-xl">
+    <div
+      onClick={() => navigate(`/postdetail/${post.id}`)}
+      className="group bg-[#0f0f0f] border border-gray-700 rounded-xl p-4 mb-12 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-gray-900/20 backdrop-blur-xl"
+    >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className=" flex items-center justify-center">
@@ -41,7 +46,6 @@ export default function PostCard({ post }) {
             </button>
           </div>
           {/* follow btn div */}
-          {console.log("post component data:-", post)}
         </div>
       </div>
 
