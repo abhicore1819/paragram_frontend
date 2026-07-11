@@ -23,7 +23,7 @@ export default function PostCard({ post }) {
   };
   return (
     <div
-      onClick={() => navigate(`/postdetail/${post.id}`)}
+      // onClick={() => navigate(`/postdetail/${post.id}`)}
       className="group bg-[#0f0f0f] border border-gray-700 rounded-xl p-4 mb-12 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-gray-900/20 backdrop-blur-xl"
     >
       <div className="flex items-center justify-between mb-3">

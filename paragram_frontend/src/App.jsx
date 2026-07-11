@@ -4,7 +4,7 @@ import "./App.css";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className=" no-select min-h-screen bg-black text-white">
       <div className="pb-24 md:pb-28">
         <Outlet />
         <div className="fixed bottom-0 left-0 right-0 bg-[#0f0f0f] border-t border-gray-700 pb-20">

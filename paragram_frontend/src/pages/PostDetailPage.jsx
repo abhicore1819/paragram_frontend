@@ -75,11 +75,6 @@ export default function PostDetailPage({}) {
 
         <p className="text-gray-300 text-base leading-relaxed mb-6">{post.content}</p>
 
-        {/* <ReactionBar
-          confessionId={confession.id}
-          reactions={confession.reactions}
-          onReact={onUpdateReactions}
-        /> */}
       </div>
 
       <div className="mb-28 max-w-md mx-auto">

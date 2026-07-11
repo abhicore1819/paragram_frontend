@@ -68,7 +68,7 @@ export default function Home() {
                 Private post
               </p>
               <h1 className="text-4xl md:text-5xl font-black text-gray-100 mb-3">
-                {/* {isMypost ? "My post" : "Paragram"} */}
+                {"Paragram"}
               </h1>
               <p className="text-gray-400 max-w-2xl text-sm md:text-base">
                 {post
