@@ -104,7 +104,7 @@ export default function Profile({ confessionCount, totalReactions }) {
           <div className="text-center mb-5 space-y-3">
             <div className="rounded-2xl border border-gray-700 bg-[#0f0f0f] p-4">
               <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">App Info</p>
-              <p className="text-sm font-semibold text-gray-300">Tenebris v1.0</p>
+              <p className="text-sm font-semibold text-gray-300">Paragram v1.0</p>
               <p className="text-xs text-gray-500 mt-1">Made with care in the quiet</p>
             </div>
           </div>
