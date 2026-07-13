@@ -28,7 +28,7 @@ export default function NewPost({ onSubmit }) {
         <div className="flex-1 space-y-6 ">
           <div>
             <label className="text-sm font-semibold text-gray-300 block mb-2">
-              Your Confession
+              Your Post
             </label>
             <textarea
               value={text}
@@ -65,3 +65,5 @@ export default function NewPost({ onSubmit }) {
     </div>
   );
 }
+
+// 

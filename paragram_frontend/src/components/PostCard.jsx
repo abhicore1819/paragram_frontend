@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ThumbsUp, MessageCircle, Hand, NavigationOff } from "lucide-react";
 import user_pfp from "../assets/user_pfp.jpeg";
 import { useNavigate } from "react-router-dom";
+import FormatTime from "../calculations/FormatTime";
 export default function PostCard({ post }) {
   const navigate = useNavigate();
   const [is_liked, setIsLiked] = useState(false);
@@ -34,7 +35,7 @@ export default function PostCard({ post }) {
           </div>
           <div className="">
             <p className="text-sm font-semibold text-white">{post.username}</p>
-            <p className="text-xs text-gray-500">{post.timestamp}</p>
+            <p className="text-xs text-gray-500">{FormatTime(post.created_at)}</p>
           </div>
           {/* follow btn div */}
           <div className="  ml-2  flex items-center justify-center">
@@ -64,13 +65,13 @@ export default function PostCard({ post }) {
             size={22}
           />
           <span className="text-xs text-gray-500">
-            {post.total_likes} Likes
+            {post.likes} Likes
           </span>
         </div>
         <div className="flex flex-col gap-2 items-center">
           <MessageCircle color={"gray"} size={22} />
           <span className="text-xs text-gray-500">
-            {post.total_comments} comments
+            {post.comments} comments
           </span>
         </div>
       </div>

@@ -51,8 +51,8 @@ export default function Signup() {
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-black text-gray-100 mb-2">Tenebris</h1>
-          <p className="text-gray-400 text-sm">Join the confessional community</p>
+          <h1 className="text-4xl font-black text-gray-100 mb-2">Paragram</h1>
+          <p className="text-gray-400 text-sm">Join the conversational community</p>
         </div>
 
         <div className="rounded-3xl border border-gray-700 bg-[#0f0f0f] p-8 shadow-xl shadow-gray-900/20">
@@ -86,7 +86,7 @@ export default function Signup() {
                 type="text"
                 value={username}
                 onChange={(e) => setusername(e.target.value)}
-                placeholder="create username"
+                placeholder="username"
                 className="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all text-sm"
               />
             </div>

@@ -33,8 +33,8 @@ export default function Login() {
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-black text-gray-100 mb-2">Tenebris</h1>
-          <p className="text-gray-400 text-sm">Welcome back to the confessional</p>
+          <h1 className="text-4xl font-black text-gray-100 mb-2">Paragram</h1>
+          <p className="text-gray-400 text-sm">Welcome back to the paragram</p>
         </div>
 
         <div className="rounded-3xl border border-gray-700 bg-[#0f0f0f] p-8 shadow-xl shadow-gray-900/20">

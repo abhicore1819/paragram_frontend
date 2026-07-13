@@ -14,6 +14,7 @@ import {
 } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
+import ProtectRoutes from "./components/ProtectedRoutes.jsx";
 import NewPost from "./pages/NewPost.jsx";
 import PostDetailPage from "./pages/PostDetailPage.jsx";
 import Activity from "./pages/Activity.jsx";
@@ -22,6 +23,7 @@ import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import PostCard from "./components/PostCard.jsx";
+import AuthProvider from "./components/AuthProvider.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,10 +32,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Home />,
+        element: (
+          <ProtectRoutes>
+            <Home />
+          </ProtectRoutes>
+        ),
       },
       {
         path: "/login",
+
         element: <Login />,
       },
       {
@@ -42,23 +49,43 @@ const router = createBrowserRouter([
       },
       {
         path: "post",
-        element: <PostCard />,
+        element: (
+          <ProtectRoutes>
+            <PostCard />
+          </ProtectRoutes>
+        ),
       },
       {
         path: "new",
-        element: <NewPost />,
+        element: (
+          <ProtectRoutes>
+            <NewPost />
+          </ProtectRoutes>
+        ),
       },
       {
         path: "activity",
-        element: <Activity />,
+        element: (
+          <ProtectRoutes>
+            <Activity />
+          </ProtectRoutes>
+        ),
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <ProtectRoutes>
+            <Profile />
+          </ProtectRoutes>
+        ),
       },
       {
         path: "postdetail/:id",
-        element: <PostDetailPage />,
+        element: (
+          <ProtectRoutes>
+            <PostDetailPage />
+          </ProtectRoutes>
+        ),
       },
     ],
   },
@@ -66,6 +93,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 );
