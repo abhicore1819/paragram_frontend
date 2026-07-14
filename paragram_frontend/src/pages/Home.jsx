@@ -10,16 +10,24 @@ export default function Home() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [post, setPost] = useState(false);
   const [displaypost, setDisplaypost] = useState(false);
-
+  const [err, setErr] = useState(false);
   const FetchReponse = async () => {
     const response = await FetchFeed();
-    setPost(response);
-    setDisplaypost(true);
+    setIsRefreshing(true);
+    if (response) {
+      setPost(response);
+      setDisplaypost(true);
+      setErr(false);
+      setIsRefreshing(false);
+    } else {
+      setIsRefreshing(false);
+      setErr(true);
+    }
   };
 
   useEffect(() => {
     FetchReponse();
-    // console.log("posts:-", post)
+    console.log("this is causing two times of fetching...")
   }, []);
 
   useEffect(() => {
@@ -45,11 +53,15 @@ export default function Home() {
               <h1 className="text-4xl md:text-5xl font-black text-gray-100 mb-3">
                 {"Paragram"}
               </h1>
-              <p className="text-gray-400 max-w-2xl text-sm md:text-base">
+              <p>
+                Post your real n raw thoughts, experiences with your
+                friends{" "}
+              </p>
+              {/* <p className="text-gray-400 max-w-2xl text-sm md:text-base">
                 {displaypost
                   ? `${post.length} stored memory${post.length !== 1 ? "s" : ""}`
                   : "Share dark thoughts with a private circle. This view shifts to feel more like a native app on your phone."}
-              </p>
+              </p> */}
             </div>
             <button
               onClick={handleRefresh}
@@ -69,6 +81,23 @@ export default function Home() {
               </span>
             </div>
           )}
+          {/* {err && <h1 className="text-center transition duration-200 my-20 lg:text-2xl">{err}</h1>} */}
+          {/* err div */}
+          {err && (
+            <div className="flex justify-center">
+              <div className="bg-red-950 border-2 rounded-lg space-y-5 border-red-800 p-5 lg:w-1/2">
+                <p className="text-red-400 text-center lg:text-lg">
+                  {" "}
+                  Unable to load your feed
+                </p>
+                <p className="text-gray-300 text-center">
+                  Oops! Something went wrong while fetching posts. Please check
+                  your internet connection and try again in a few moments.
+                </p>
+              </div>
+            </div>
+          )}
+          {/* err div */}
           {displaypost && (
             <div className="space-y-4">
               {post.map((post_obj) => (

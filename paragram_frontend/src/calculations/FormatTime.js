@@ -1,17 +1,15 @@
 import { CalendarDays, ClockArrowLeft, ToyBrick } from "lucide-react";
 
 const FormatTime = (time) => {
-    const postdate = new Date(time);
+  const postdate = new Date(time);
   const currentdate = new Date();
   const ms = currentdate - postdate;
-  //   const ms = 2100000000;
   const sec = Math.floor(ms / 1000);
   const min = Math.floor(sec / 60);
   const hr = Math.floor(min / 60);
   const day = Math.floor(hr / 24);
   const weeks = Math.floor(day / 7);
 
-  console.log(day);
   if (day > 14) {
     return `${weeks} weeks ago`;
   }
@@ -37,4 +35,4 @@ const FormatTime = (time) => {
 
 // const res = FormatTime();
 // console.log(res);
-export default FormatTime
+export default FormatTime;
