@@ -55,23 +55,27 @@ export default function Signup() {
 
       case "password must be 6 characters long":
         setDisabled(false);
+        setLogin(false);
         setErr(true);
         setUIMsg(response);
         break;
 
       case "password mismatch":
         setDisabled(false);
+        setLogin(false);
         setErr(true);
         setUIMsg(response);
         break;
 
       case "password matched":
+        setLogin(false);
         setDisabled(false);
         setErr(true);
         setUIMsg(response);
         break;
 
       case "allowed":
+        setLogin(true);
         setDisabled(true);
         setErr(false);
         break;
@@ -161,7 +165,6 @@ export default function Signup() {
                 Confirm Password
               </label>
               <div className="relative">
-                
                 <input
                   onChange={HandleChange}
                   required
