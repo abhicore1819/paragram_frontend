@@ -11,6 +11,7 @@ export default function Home() {
   const [post, setPost] = useState(false);
   const [displaypost, setDisplaypost] = useState(false);
   const [err, setErr] = useState(false);
+
   const FetchReponse = async () => {
     const response = await FetchFeed();
     setIsRefreshing(true);

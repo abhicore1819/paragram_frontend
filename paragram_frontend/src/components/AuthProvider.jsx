@@ -2,13 +2,11 @@ import { LineChart, SettingsIcon, TowelRackIcon } from "lucide-react";
 import { useContext, createContext, useState, useEffect } from "react";
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
-  const token = localStorage.getItem("Authorization");
-  const [logged_in, setLoggedIn] = useState(!!token);
+  const token = document.cookie
+  const [logged_in, setLoggedIn] = useState(token);
 
   return (
-    <AuthContext.Provider
-      value={{ login_status: logged_in}}
-    >
+    <AuthContext.Provider value={{ logged_in, setLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );
