@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useContext, useEffectEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Eye, EyeOff, LogIn } from "lucide-react";
+import { Eye, EyeOff, LogIn, Rss } from "lucide-react";
 import SignupFormHanlder from "../service/SignUpFormHandler";
+import { ToastContainer, toast } from "react-toastify";
+import Login from "../service/Login";
+import SignupUser from "../service/SignupUser";
+import AuthProvider from "../components/AuthProvider";
+import { AuthContext } from "../components/AuthProvider";
 export default function Signup() {
   const [disbale, setDisabled] = useState(false);
   const [show_password, setShowPassword] = useState(false);
   const [err, setErr] = useState(false);
   const [login, setLogin] = useState(false);
   const [ui_msg, setUIMsg] = useState("");
+  const [show_popup, setShowpopup] = useState(false);
+  const {logged_in, setLoggedIn} = useContext(AuthContext)
   const navigate = useNavigate();
 
   const PasswordToggle = () => {
@@ -33,34 +40,56 @@ export default function Signup() {
     });
   };
 
-  const Submit = (e) => {
-    setLogin(true);
-    setDisabled(true);
 
+  const LoginUser = async () => {
+    const signup_status = await SignupUser(form);
+    if (signup_status === "signedup") {
+      const token = await Login(form);
+      if (token) {
+        setLoggedIn(true)
+        setShowpopup(true);
+        toast.success("Logged in successfull");
+        setTimeout(()=>{
+          navigate("/");
+        }, 3000)
+      }
+    }
+  };
+
+  const Submit = (e) => {
+    setDisabled(true);
     e.preventDefault();
     const response = SignupFormHanlder(form);
 
     switch (response) {
       case "age restricted":
+        setLogin(false);
+        console.log(response);
         setDisabled(false);
         setErr(true);
         setUIMsg("user must be 18 or above 18");
         break;
 
       case "password must contain atleast one upper case and lower case letter":
+        setLogin(false);
+        console.log(response);
         setDisabled(false);
         setErr(true);
         setUIMsg(response);
         break;
 
       case "password must be 6 characters long":
+        setLogin(false);
+        console.log(response);
         setDisabled(false);
         setLogin(false);
         setErr(true);
         setUIMsg(response);
         break;
 
-      case "password mismatch":
+      case "both password doesn't match":
+        setLogin(false);
+        console.log(response);
         setDisabled(false);
         setLogin(false);
         setErr(true);
@@ -69,24 +98,28 @@ export default function Signup() {
 
       case "password matched":
         setLogin(false);
+        console.log(response);
+        setLogin(false);
         setDisabled(false);
         setErr(true);
         setUIMsg(response);
         break;
 
       case "allowed":
+        console.log(response);
         setLogin(true);
         setDisabled(true);
         setErr(false);
+        LoginUser();
         break;
 
       default:
         break;
     }
   };
-
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        <ToastContainer position="top-center" autoClose={2000} />
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-black text-gray-100 mb-2">Paragram</h1>
@@ -147,7 +180,7 @@ export default function Signup() {
                   onChange={HandleChange}
                   required
                   value={form["password"]}
-                  type={show_password ? "password" : "text"}
+                  type={show_password ? "text" : "password"}
                   placeholder="••••••••"
                   className="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all text-sm pr-10"
                 />
@@ -169,7 +202,7 @@ export default function Signup() {
                   onChange={HandleChange}
                   required
                   name="confirm_password"
-                  type={show_password ? "password" : "text"}
+                  type={show_password ? "text" : "password"}
                   value={form["confirm_password"]}
                   placeholder="••••••••"
                   className="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all text-sm pr-10"
@@ -208,7 +241,7 @@ export default function Signup() {
               <button
                 disabled={disbale}
                 type="submit"
-                className="w-full mt-6 bg-gray-100 hover:bg-gray-200 disabled:bg-gray-700 disabled:text-gray-500 text-gray-950 font-bold py-3 rounded-lg transition-all duration-200 text-sm uppercase tracking-wider"
+                className="w-full mt-6 bg-gray-100 hover:scale-95 disabled:bg-gray-700 disabled:text-gray-500 text-gray-950 font-bold py-3 rounded-lg transition-all duration-200 text-sm uppercase tracking-wider"
               >
                 Create Account
               </button>
