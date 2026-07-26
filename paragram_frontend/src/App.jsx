@@ -7,11 +7,12 @@ import { AuthContext } from "./components/AuthProvider";
 import ProtectRoutes from "./components/ProtectedRoutes";
 import AuthProvider from "./components/AuthProvider";
 export default function App() {
-  const { logged_in, setLoggedIn } = useContext(AuthContext);
+  const { logged_in, setLoggedIn, token, setToken } = useContext(AuthContext);
   return (
     <div className=" no-select min-h-screen bg-black text-white">
       <div className="pb-28 md:pb-28">
         <Outlet />
+        {console.log(logged_in)}
         {logged_in && (
           <div className="fixed bottom-0 left-0 right-0 bg-[#0f0f0f] border-t border-gray-700 pb-20">
             <div className="text-center py-4 text-xs uppercase tracking-[0.24em] text-gray-500">
