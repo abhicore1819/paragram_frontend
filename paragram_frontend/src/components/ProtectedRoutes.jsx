@@ -4,8 +4,8 @@ import { AuthContext } from "./AuthProvider";
 import { useContext } from "react";
 
 const ProtectRoutes = ({children}) => {
-  const { logged_in, setLoggedIn } = useContext(AuthContext);
-  if (!logged_in) {
+  const { logged_in, setLoggedIn, token, setToken } = useContext(AuthContext);
+  if (!token) {
       return <Navigate to={"/login"}></Navigate>;
 }
   return children

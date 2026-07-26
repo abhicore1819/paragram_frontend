@@ -7,16 +7,23 @@ import Login from "../service/Login";
 import SignupUser from "../service/SignupUser";
 import AuthProvider from "../components/AuthProvider";
 import { AuthContext } from "../components/AuthProvider";
+
+//  ===== states =====
 export default function Signup() {
-  const [disbale, setDisabled] = useState(false);
+  const [disable, setDisabled] = useState(false);
   const [show_password, setShowPassword] = useState(false);
   const [err, setErr] = useState(false);
   const [login, setLogin] = useState(false);
   const [ui_msg, setUIMsg] = useState("");
   const [show_popup, setShowpopup] = useState(false);
-  const {logged_in, setLoggedIn} = useContext(AuthContext)
-  const navigate = useNavigate();
+  const { logged_in, setLoggedIn, token, setToken } = useContext(AuthContext);
+  //  ===== states =====
 
+  // ==== hooks =====
+  const navigate = useNavigate();
+  // ==== hooks =====
+
+  // ===== toggles pass =====
   const PasswordToggle = () => {
     if (!show_password) {
       setShowPassword(true);
@@ -24,7 +31,9 @@ export default function Signup() {
       setShowPassword(false);
     }
   };
+  // ===== toggles pass =====
 
+  // ===== handles form =====
   const [form, setForm] = useState({
     email: "",
     username: "",
@@ -32,30 +41,42 @@ export default function Signup() {
     confirm_password: "",
     dob: "",
   });
+  // ===== handles form =====
 
+  // ===== handles change =====
   const HandleChange = (e) => {
     const { name, value } = e.target;
     setForm((prevData) => {
       return { ...prevData, [name]: value };
     });
   };
+  // ==== handles chan =====
 
-
+  //  ===== logins user =====
   const LoginUser = async () => {
     const signup_status = await SignupUser(form);
     if (signup_status === "signedup") {
-      const token = await Login(form);
-      if (token) {
+      const cookie_token = await Login(form);
+      if (cookie_token) {
+        setToken(cookie_token)
         setLoggedIn(true)
         setShowpopup(true);
         toast.success("Logged in successfull");
-        setTimeout(()=>{
+        setTimeout(() => {
           navigate("/");
-        }, 3000)
+        }, 3000);
       }
+
+    } else {
+      setErr(true);
+      setUIMsg("Something went wrong. try again later!");
+      setLogin(false)
+      setDisabled(false)
     }
   };
+  //  ===== logins user =====
 
+  // ===== submits form =====
   const Submit = (e) => {
     setDisabled(true);
     e.preventDefault();
@@ -106,7 +127,6 @@ export default function Signup() {
         break;
 
       case "allowed":
-        console.log(response);
         setLogin(true);
         setDisabled(true);
         setErr(false);
@@ -117,9 +137,11 @@ export default function Signup() {
         break;
     }
   };
+  // ===== submits form =====
+
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
-        <ToastContainer position="top-center" autoClose={2000} />
+      <ToastContainer position="top-center" autoClose={2000} />
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-black text-gray-100 mb-2">Paragram</h1>
@@ -185,6 +207,7 @@ export default function Signup() {
                   className="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all text-sm pr-10"
                 />
                 <button
+                type="button"
                   onClick={() => setShowPassword(!show_password)}
                   className="absolute right-3 top-1/2 -translate-y-1/2"
                 >
@@ -208,6 +231,7 @@ export default function Signup() {
                   className="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all text-sm pr-10"
                 />
                 <button
+                type="button"
                   onClick={() => setShowPassword(!show_password)}
                   className="absolute right-3 top-1/2 -translate-y-1/2"
                 >
@@ -239,7 +263,7 @@ export default function Signup() {
               </div>
             ) : (
               <button
-                disabled={disbale}
+                disabled={disable}
                 type="submit"
                 className="w-full mt-6 bg-gray-100 hover:scale-95 disabled:bg-gray-700 disabled:text-gray-500 text-gray-950 font-bold py-3 rounded-lg transition-all duration-200 text-sm uppercase tracking-wider"
               >

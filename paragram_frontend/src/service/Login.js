@@ -1,6 +1,6 @@
 import axios from "axios";
+import { createMemoryRouter } from "react-router-dom";
 const Login = async ({ username, password }) => {
-  console.log("signup page payload:-", username, password);
   const LOGIN_URL = import.meta.env.VITE_LOGIN;
   const login_request = await axios.post(LOGIN_URL, {
     username: username,
@@ -12,7 +12,7 @@ const Login = async ({ username, password }) => {
     document.cookie = `token=${login_response.token}`;
     return login_response.token;
   } catch (err) {
-
+    return "error"
   }
 };
 

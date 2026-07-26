@@ -8,7 +8,7 @@ const SignupUser = async (form) => {
   
   } catch (err) {
     console.log(err);
-    return "err"
+    return "error"
   }
 };
 
