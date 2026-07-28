@@ -5,16 +5,17 @@ import AuthProvider from "../components/AuthProvider";
 import { AuthContext } from "../components/AuthProvider";
 import FetchFeed from "../service/FetchFeed";
 import postcssPluginWarning from "tailwindcss";
+import { toast, ToastContainer } from "react-toastify";
 export default function Home() {
-  const data = useContext(AuthContext);
+  const { logged_in, setLoggedIn, token, setToken, username, setUsername } =
+    useContext(AuthContext);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [post, setPost] = useState(false);
   const [displaypost, setDisplaypost] = useState(false);
   const [err, setErr] = useState(false);
 
   const FetchReponse = async () => {
-    const response = await FetchFeed();
-    setIsRefreshing(true);
+    const response = await FetchFeed(token);
     if (response) {
       setPost(response);
       setDisplaypost(true);
@@ -25,18 +26,19 @@ export default function Home() {
       setErr(true);
     }
   };
-
-  useEffect(() => {
-    FetchReponse();
-    console.log("this is causing two times of fetching...")
-  }, []);
-
+  
   useEffect(() => {
     setIsRefreshing(true);
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 1000);
-  }, [post]);
+    FetchReponse();
+  }, []);
+  
+  // useEffect(() => {
+    //   setIsRefreshing(true);
+  //   setTimeout(() => {
+  //     setIsRefreshing(false);
+  //   }, 1000);
+
+  // }, [post]);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -58,11 +60,6 @@ export default function Home() {
                 Post your real n raw thoughts, experiences with your
                 friends{" "}
               </p>
-              {/* <p className="text-gray-400 max-w-2xl text-sm md:text-base">
-                {displaypost
-                  ? `${post.length} stored memory${post.length !== 1 ? "s" : ""}`
-                  : "Share dark thoughts with a private circle. This view shifts to feel more like a native app on your phone."}
-              </p> */}
             </div>
             <button
               onClick={handleRefresh}
@@ -73,11 +70,10 @@ export default function Home() {
           </div>
           {isRefreshing && (
             <div className="flex justify-center text-slate-500">
-              {/* Refreshing... */}
-              <p className="w-8 h-8 fixed animate-spin border-4 border-t-transparent border-gray-100 rounded-full">
+              <span className="w-8 h-8 absolute animate-spin border-4 border-t-transparent border-gray-100 rounded-full">
                 {" "}
-              </p>
-              <span className=" w-8 h-8 border-4 border-gray-500 rounded-full">
+              </span>
+              <span className="w-8 h-8 border-4 border-gray-500 rounded-full">
                 {" "}
               </span>
             </div>

@@ -1,12 +1,9 @@
 import axios from "axios";
 const FEED_URL = import.meta.env.VITE_FETCH_FEED;
-const FetchFeed = async () => {
-  const spliited_token = document.cookie.split("=")
-  const [token_key, token_val] = spliited_token
-  console.log(token_key, token_val)
+const FetchFeed = async (token) => {
   try {
     const feed_request = await axios.get(FEED_URL, {
-      headers: { Authorization: `Token ${token_val}` },
+      headers: { Authorization: `Token ${token}` },
     });
     const feed_response = feed_request.data;
     return feed_response;

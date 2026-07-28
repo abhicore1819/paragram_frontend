@@ -6,8 +6,8 @@ import {
   MonitorDot,
   MoveDiagonalIcon,
 } from "lucide-react";
-const SignupFormHanlder = (form) => {
-  const birth_date = new Date(form.dob);
+const FormHanlder = ({ username, password, confirm_password, dob, email }) => {
+  const birth_date = new Date(dob);
   const birth_year = birth_date.getFullYear();
   const birth_month = birth_date.getMonth();
   const birth_day = birth_date.getDate();
@@ -18,19 +18,19 @@ const SignupFormHanlder = (form) => {
   const month_diff = birth_month - present_month;
   const day_diff = birth_day - present_day;
 
-  const cookie = document.cookie;
-  console.log(cookie);
   try {
     // ===== password validation =====
-    if (form.password !== form.confirm_password) {
-      return "both password doesn't match";
+    if (confirm_password) {
+      if (password !== confirm_password) {
+        return "both password doesn't match";
+      }
     }
 
-    if (!/^(?=.*[a-z])(?=.*[A-Z])/.test(form.password)) {
+    if (!/^(?=.*[a-z])(?=.*[A-Z])/.test(password)) {
       return "password must contain atleast one upper case and lower case letter";
     }
 
-    if (form.password.length < 6) {
+    if (password.length < 6) {
       return "password must be 6 characters long";
     }
     // ===== password validation =====
@@ -50,7 +50,8 @@ const SignupFormHanlder = (form) => {
     // ===== age validation =====
   } catch (error) {
     console.log("error:-", error);
+    return "error";
   }
 };
 
-export default SignupFormHanlder;
+export default FormHanlder;

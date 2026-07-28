@@ -2,10 +2,12 @@ import { LineChart, SettingsIcon, TowelRackIcon } from "lucide-react";
 import { useContext, createContext, useState, useEffect } from "react";
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
-  const spliited_token = document.cookie.split("=");
-  const [token_key, token_val] = spliited_token;
+  const spllited_token = document.cookie.split("=");
+  const [username, setUsername] = useState("");
+  const [token_key, token_val] = spllited_token;
   const [token, setToken] = useState(token_val);
   const [logged_in, setLoggedIn] = useState(false);
+
   useEffect(() => {
     if (token) {
       setLoggedIn(true);
@@ -15,7 +17,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, setToken, logged_in, setLoggedIn }}>
+    <AuthContext.Provider value={{ token, setToken, logged_in, setLoggedIn, username, setUsername }}>
       {children}
     </AuthContext.Provider>
   );

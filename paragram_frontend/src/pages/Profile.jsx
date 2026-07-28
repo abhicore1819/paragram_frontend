@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { UNSAFE_DataRouterStateContext, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   HelpCircle,
@@ -12,11 +12,13 @@ import { useContext, useEffect } from "react";
 import { FormatJoinDate } from "../calculations/FormatTime";
 import { AuthContext } from "../components/AuthProvider";
 import LogoutUser from "../service/LogoutUser";
+import LogoutConfirmation from "../components/LogoutConfirmation";
 import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
-export default function Profile({ confessionCount, totalReactions }) {
+export default function Profile() {
   const { logged_in, setLoggedIn, token, setToken } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [logout_popup, setLogoutPopup] = useState(false);
   const [profile, setProfile] = useState({
     username: "",
     joined_at: "",
@@ -34,17 +36,20 @@ export default function Profile({ confessionCount, totalReactions }) {
       followers: res.followers,
       following: res.following,
     });
-    setToken(token)
+    setToken(token);
+  };
+
+  const LogoutPopup = () => {
+    setLogoutPopup(true);
   };
 
   const Logout = async () => {
     const response = await LogoutUser(token);
-    console.log("in the profile page:-", response);
     if (response) {
       toast.success("user logged out");
       setTimeout(() => {
-        setLoggedIn(false)
-        navigate("/login"); 
+        setLoggedIn(false);
+        navigate("/login");
       }, 3000);
     } else {
       toast.warn("something went wrong while logging out. try again later");
@@ -86,11 +91,9 @@ export default function Profile({ confessionCount, totalReactions }) {
                   A
                 </div>
                 <p className="text-lg font-semibold text-gray-100 mb-1">
-                  {/* {Anonymous User} */}
                   {profile.username ? profile.username : ""}
                 </p>
                 <p className="text-xs text-gray-500 uppercase tracking-wider">
-                  {/* {Joined Paragram} */}
                   {profile.joined_at ? FormatJoinDate(profile.joined_at) : ""}
                 </p>
               </div>
@@ -180,6 +183,7 @@ export default function Profile({ confessionCount, totalReactions }) {
               </p>
             </div>
           </div>
+          {/* {logout_popup ? <LogoutConfirmation/> : ""} */}
         </div>
       </div>
     </div>

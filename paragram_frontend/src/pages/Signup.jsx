@@ -1,9 +1,9 @@
 import { useContext, useEffectEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Eye, EyeOff, LogIn, Rss } from "lucide-react";
-import SignupFormHanlder from "../service/SignUpFormHandler";
+import { Eye, EyeOff, ImageOff, LogIn, Rss } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
-import Login from "../service/Login";
+import LoginUser from "../service/LoginUser";
+import FormHanlder from "../forms/FormHandler";
 import SignupUser from "../service/SignupUser";
 import AuthProvider from "../components/AuthProvider";
 import { AuthContext } from "../components/AuthProvider";
@@ -13,10 +13,10 @@ export default function Signup() {
   const [disable, setDisabled] = useState(false);
   const [show_password, setShowPassword] = useState(false);
   const [err, setErr] = useState(false);
-  const [login, setLogin] = useState(false);
+  const [is_loading, setLoading] = useState(false);
   const [ui_msg, setUIMsg] = useState("");
   const [show_popup, setShowpopup] = useState(false);
-  const { logged_in, setLoggedIn, token, setToken } = useContext(AuthContext);
+  const { logged_in, setLoggedIn, token, setToken, username, setUsername } = useContext(AuthContext);
   //  ===== states =====
 
   // ==== hooks =====
@@ -50,18 +50,18 @@ export default function Signup() {
       return { ...prevData, [name]: value };
     });
   };
-  // ==== handles chan =====
+  // ==== handles change =====
 
-  //  ===== logins user =====
-  const LoginUser = async () => {
+  //  ===== handles login response =====
+  const HandleLoginResponse = async () => {
     const signup_status = await SignupUser(form);
     if (signup_status === "signedup") {
-      const cookie_token = await Login(form);
+      const cookie_token = await LoginUser(form);
       if (cookie_token) {
         setToken(cookie_token)
-        setLoggedIn(true)
+        setUsername(form.username)
         setShowpopup(true);
-        toast.success("Logged in successfull");
+        // toast.success("Logged in successfull");
         setTimeout(() => {
           navigate("/");
         }, 3000);
@@ -70,67 +70,69 @@ export default function Signup() {
     } else {
       setErr(true);
       setUIMsg("Something went wrong. try again later!");
-      setLogin(false)
+      setLoading(false)
       setDisabled(false)
     }
   };
-  //  ===== logins user =====
+  //  ===== handles login response =====
 
   // ===== submits form =====
   const Submit = (e) => {
     setDisabled(true);
     e.preventDefault();
-    const response = SignupFormHanlder(form);
+    const response = FormHanlder(form);
 
     switch (response) {
       case "age restricted":
-        setLogin(false);
-        console.log(response);
+        setLoading(false);
         setDisabled(false);
         setErr(true);
         setUIMsg("user must be 18 or above 18");
         break;
 
       case "password must contain atleast one upper case and lower case letter":
-        setLogin(false);
-        console.log(response);
+        setLoading(false);
         setDisabled(false);
         setErr(true);
         setUIMsg(response);
         break;
 
       case "password must be 6 characters long":
-        setLogin(false);
-        console.log(response);
+        setLoading(false);
         setDisabled(false);
-        setLogin(false);
+        setLoading(false);
         setErr(true);
         setUIMsg(response);
         break;
 
       case "both password doesn't match":
-        setLogin(false);
-        console.log(response);
+        setLoading(false);
         setDisabled(false);
-        setLogin(false);
+        setLoading(false);
         setErr(true);
         setUIMsg(response);
         break;
 
       case "password matched":
-        setLogin(false);
-        console.log(response);
-        setLogin(false);
+        setLoading(false);
+        setLoading(false);
         setDisabled(false);
         setErr(true);
         setUIMsg(response);
         break;
 
       case "allowed":
-        setLogin(true);
+        setLoading(true);
         setDisabled(true);
         setErr(false);
-        LoginUser();
+        HandleLoginResponse();
+        break;
+
+      case "error":
+        setLoading(false);
+        setDisabled(false);
+        setErr(true);
+        setUIMsg("Something went wrong")
         break;
 
       default:
@@ -255,7 +257,7 @@ export default function Signup() {
               </div>
             </div>
 
-            {login ? (
+            {is_loading ? (
               <div className=" flex justify-center items-center bg-gray-700 w-full mt-6 py-3 rounded-lg transition-all duration-200 text-sm ">
                 <p className="border-4 border-gray-300 rounded-full border-t-transparent w-6 h-6 animate-spin">
                   {" "}
