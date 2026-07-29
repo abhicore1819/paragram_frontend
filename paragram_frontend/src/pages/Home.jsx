@@ -4,12 +4,14 @@ import BottomNav from "../components/BottomNav";
 import AuthProvider from "../components/AuthProvider";
 import { AuthContext } from "../components/AuthProvider";
 import FetchFeed from "../service/FetchFeed";
+import FeedSkeleton from "../skeletons/FeedSkeleton";
 import postcssPluginWarning from "tailwindcss";
 import { toast, ToastContainer } from "react-toastify";
 export default function Home() {
   const { logged_in, setLoggedIn, token, setToken, username, setUsername } =
     useContext(AuthContext);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [is_loading, setIsLoading] = useState(false);
   const [post, setPost] = useState(false);
   const [displaypost, setDisplaypost] = useState(false);
   const [err, setErr] = useState(false);
@@ -20,25 +22,17 @@ export default function Home() {
       setPost(response);
       setDisplaypost(true);
       setErr(false);
-      setIsRefreshing(false);
+      setIsLoading(false);
     } else {
-      setIsRefreshing(false);
+      setIsLoading(false);
       setErr(true);
     }
   };
-  
+
   useEffect(() => {
-    setIsRefreshing(true);
+    setIsLoading(true);
     FetchReponse();
   }, []);
-  
-  // useEffect(() => {
-    //   setIsRefreshing(true);
-  //   setTimeout(() => {
-  //     setIsRefreshing(false);
-  //   }, 1000);
-
-  // }, [post]);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -57,7 +51,7 @@ export default function Home() {
                 {"Paragram"}
               </h1>
               <p>
-                Post your real n raw thoughts, experiences with your
+                Post your real and raw thoughts, experiences with your
                 friends{" "}
               </p>
             </div>
@@ -68,18 +62,14 @@ export default function Home() {
               Refresh feed
             </button>
           </div>
-          {isRefreshing && (
-            <div className="flex justify-center text-slate-500">
-              <span className="w-8 h-8 absolute animate-spin border-4 border-t-transparent border-gray-100 rounded-full">
-                {" "}
-              </span>
-              <span className="w-8 h-8 border-4 border-gray-500 rounded-full">
-                {" "}
-              </span>
-            </div>
+          {is_loading && (
+            <>
+              {[...Array(5)].map((_, index) => (
+                <FeedSkeleton key={index} />
+              ))}
+            </>
           )}
-          {/* {err && <h1 className="text-center transition duration-200 my-20 lg:text-2xl">{err}</h1>} */}
-          {/* err div */}
+          {/* {is_loading ? <Skeleton width={200} count={2} /> : ""} */}
           {err && (
             <div className="flex justify-center">
               <div className="bg-red-950 border-2 rounded-lg space-y-5 border-red-800 p-5 lg:w-1/2">

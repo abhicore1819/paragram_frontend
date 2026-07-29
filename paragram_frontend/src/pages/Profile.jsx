@@ -94,7 +94,7 @@ export default function Profile() {
                   {profile.username ? profile.username : ""}
                 </p>
                 <p className="text-xs text-gray-500 uppercase tracking-wider">
-                  {profile.joined_at ? FormatJoinDate(profile.joined_at) : ""}
+                 joined {profile.joined_at ? FormatJoinDate(profile.joined_at) : ""}
                 </p>
               </div>
             </div>
