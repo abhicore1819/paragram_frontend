@@ -58,10 +58,14 @@ export default function Home() {
             <button
               onClick={handleRefresh}
               className="mt-4 md:mt-0 inline-flex items-center justify-center rounded-3xl border border-gray-600/50 bg-gray-800/30 px-5 py-3 text-sm font-semibold text-gray-100 shadow-sm shadow-gray-900/20 transition-all hover:border-gray-500 hover:bg-gray-800/50"
-            >
+              >
               Refresh feed
             </button>
           </div>
+              {isRefreshing && (<div className="" >
+                <p className="h-8 w-8 border-4 absolute border-gray-400  rounded-full" >  </p>
+                <p className="h-8 w-8 border-4 animate-spin  border-t-transparent border-gray-100 rounded-full" >  </p>
+              </div>)}
           {is_loading && (
             <>
               {[...Array(5)].map((_, index) => (
@@ -69,7 +73,6 @@ export default function Home() {
               ))}
             </>
           )}
-          {/* {is_loading ? <Skeleton width={200} count={2} /> : ""} */}
           {err && (
             <div className="flex justify-center">
               <div className="bg-red-950 border-2 rounded-lg space-y-5 border-red-800 p-5 lg:w-1/2">
