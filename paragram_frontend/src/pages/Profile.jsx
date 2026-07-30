@@ -104,28 +104,28 @@ export default function Profile() {
               <div className="mb-3 text-xs uppercase tracking-[0.24em] text-gray-400">
                 {/* Statistics */}
               </div>
-              <div className="grid grid-cols-3 gap-3">
-                <div className="rounded-2xl flex flex-col items-center bg-gray-900/50 border  border-gray-700/50 p-4  text-center">
-                  <p className="text-2xl md:text-3xl font-black text-gray-100">
+              <div className="grid grid-cols-3 gap-3 ">
+                <div className="rounded-2xl md:flex md:justify-center gap-2 text-center p-4">
+                  <p className=" text-2xl font-black text-gray-100">
                     {profile.posts}
                   </p>
-                  <p className="text-gray-400 text-[8px] md:text-[11px] uppercase tracking-[0.2em] mt-2">
+                  <p className="text-gray-400 text-[10px] md:text-[11px] uppercase tracking-[0.2em] mt-2">
                     posts
                   </p>
                 </div>
-                <div className="rounded-2xl flex flex-col items-center bg-gray-900/50 border border-gray-700/50 p-4 text-center">
-                  <p className="text-2xl md:text-3xl font-black text-gray-100">
+                <div className="rounded-2xl md:flex md:justify-center gap-2 text-center p-4">
+                  <p className=" text-2xl font-black text-gray-100">
                     {profile.following}
                   </p>
-                  <p className="text-gray-400  text-[8px] md:text-[11px] uppercase tracking-[0.2em] mt-2">
+                  <p className="text-gray-400  text-[10px] md:text-[11px] uppercase tracking-[0.2em] mt-2">
                     following
                   </p>
                 </div>
-                <div className="rounded-2xl flex flex-col items-center bg-gray-900/50  border border-gray-700/50 p-4 text-center">
-                  <p className="text-2xl md:text-3xl font-black text-gray-100">
+                <div className="rounded-2xl md:flex md:justify-center gap-2 text-center p-4">
+                  <p className=" text-2xl font-black text-gray-100">
                     {profile.followers}
                   </p>
-                  <p className="text-gray-400 text-[8px] md:text-[11px] uppercase tracking-[0.2em] mt-2">
+                  <p className="text-gray-400 text-[10px] md:text-[11px] uppercase tracking-[0.2em] mt-2">
                     followers
                   </p>
                 </div>
