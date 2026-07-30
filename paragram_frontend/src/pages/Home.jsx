@@ -7,6 +7,9 @@ import FetchFeed from "../service/FetchFeed";
 import FeedSkeleton from "../skeletons/FeedSkeleton";
 import postcssPluginWarning from "tailwindcss";
 import { toast, ToastContainer } from "react-toastify";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 export default function Home() {
   const { logged_in, setLoggedIn, token, setToken, username, setUsername } =
     useContext(AuthContext);
@@ -15,7 +18,8 @@ export default function Home() {
   const [post, setPost] = useState(false);
   const [displaypost, setDisplaypost] = useState(false);
   const [err, setErr] = useState(false);
-
+  const [open, setOpen] = useState(false);
+  const position = { vertical: "top", horizontal: "center" };
   const FetchReponse = async () => {
     const response = await FetchFeed(token);
     if (response) {
@@ -41,8 +45,33 @@ export default function Home() {
     }, 1000);
   };
 
+  const HandleSnackbar = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
+
   return (
     <div className="min-h-screen bg-black pt-6 px-4 md:px-6 xl:px-12">
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          severity="success"
+          variant="filled"
+          sx={{
+            width: 450,
+            borderRadius: 3,
+            fontSize: "15px",
+            fontWeight: 600,
+            py: 1,
+            px: 2,
+          }}
+        >
+          Post uploaded successfully!
+        </Alert>
+      </Snackbar>
       <div className="mx-auto max-w-4xl">
         <div className="space-y-6">
           <div className="rounded-4xl border border-gray-700 bg-[#0f0f0f] p-6 shadow-xl shadow-gray-900/10 md:flex md:items-end md:justify-between md:gap-6">
@@ -58,14 +87,21 @@ export default function Home() {
             <button
               onClick={handleRefresh}
               className="mt-4 md:mt-0 inline-flex items-center justify-center rounded-3xl border border-gray-600/50 bg-gray-800/30 px-5 py-3 text-sm font-semibold text-gray-100 shadow-sm shadow-gray-900/20 transition-all hover:border-gray-500 hover:bg-gray-800/50"
-              >
+            >
               Refresh feed
             </button>
+            <button onClick={HandleSnackbar}>Click</button>
           </div>
-              {isRefreshing && (<div className="flex justify-center items-center" >
-                <p className="h-8 w-8 border-4 absolute border-gray-400  rounded-full" >  </p>
-                <p className="h-8 w-8 border-4 animate-spin  border-t-transparent border-gray-100 rounded-full" >  </p>
-              </div>)}
+          {isRefreshing && (
+            <div className="flex justify-center items-center">
+              <p className="h-8 w-8 border-4 absolute border-gray-400  rounded-full">
+                {" "}
+              </p>
+              <p className="h-8 w-8 border-4 animate-spin  border-t-transparent border-gray-100 rounded-full">
+                {" "}
+              </p>
+            </div>
+          )}
           {is_loading && (
             <>
               {[...Array(5)].map((_, index) => (
