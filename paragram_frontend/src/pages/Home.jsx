@@ -62,7 +62,7 @@ export default function Home() {
               Refresh feed
             </button>
           </div>
-              {isRefreshing && (<div className="" >
+              {isRefreshing && (<div className="flex justify-center items-center" >
                 <p className="h-8 w-8 border-4 absolute border-gray-400  rounded-full" >  </p>
                 <p className="h-8 w-8 border-4 animate-spin  border-t-transparent border-gray-100 rounded-full" >  </p>
               </div>)}
