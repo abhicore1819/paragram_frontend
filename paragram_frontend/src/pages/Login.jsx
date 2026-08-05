@@ -32,8 +32,8 @@ export default function Login() {
     });
     if (login_cookie) {
       setTimeout(() => {
+        setLoggedIn(true);
         setToken(login_cookie);
-        setLoggedIn(true)
         navigate("/");
       }, 2000);
     }
@@ -76,7 +76,7 @@ export default function Login() {
       case "allowed":
         setIsLoading(true);
         setDisabled(true);
-        HandleLoginResponse()
+        HandleLoginResponse();
         break;
 
       default:

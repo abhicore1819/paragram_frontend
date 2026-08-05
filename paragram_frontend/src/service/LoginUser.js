@@ -8,7 +8,7 @@ const LoginUser = async ({ username, password }) => {
       password: password,
     });
     const login_response = login_request.data;
-    document.cookie = `token=${login_response.token}`;
+    document.cookie = `token=${login_response.token}; expires=Thu, 12 jan 2027 12:00:00 UTC`;
     return login_response.token;
   } catch (err) {
     console.log("login error:-", err);

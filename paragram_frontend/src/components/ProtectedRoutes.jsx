@@ -5,6 +5,7 @@ import { useContext } from "react";
 
 const ProtectRoutes = ({ children }) => {
   const { logged_in, setLoggedIn, token, setToken } = useContext(AuthContext);
+  console.log(logged_in)
   if (!token) {
     return <Navigate to={"/login"}></Navigate>;
   }
