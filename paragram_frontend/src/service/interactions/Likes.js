@@ -9,6 +9,7 @@ const CreateLike = async (post_id, token) => {
       { liked: post_id },
       { headers: { Authorization: `Token ${token}` } },
     );
+    
     const create_like_response = create_like_request.data;
     return create_like_response;
   } catch (error) {
