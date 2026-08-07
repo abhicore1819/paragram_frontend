@@ -4,12 +4,14 @@ import BottomNav from "../components/BottomNav";
 import AuthProvider from "../components/AuthProvider";
 import { AuthContext } from "../components/AuthProvider";
 import FetchFeed from "../service/FetchFeed";
-import FeedSkeleton from "../skeletons/FeedSkeleton";
+import FeedSkeleton from "../components/skeletons/FeedSkeleton";
 import postcssPluginWarning from "tailwindcss";
 import { toast, ToastContainer } from "react-toastify";
+import SnackbarMessage from "../components/snackbar/SnackBarMessage";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { ImageOff, ShieldQuestion } from "lucide-react";
 export default function Home() {
   const { logged_in, setLoggedIn, token, setToken, username, setUsername } =
     useContext(AuthContext);
@@ -18,7 +20,7 @@ export default function Home() {
   const [post, setPost] = useState(false);
   const [displaypost, setDisplaypost] = useState(false);
   const [err, setErr] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [show_message, setShowMessage] = useState(false);
   const position = { vertical: "top", horizontal: "center" };
   const FetchReponse = async () => {
     const response = await FetchFeed(token);
@@ -45,33 +47,8 @@ export default function Home() {
     }, 1000);
   };
 
-  const HandleSnackbar = () => setOpen(true);
-
-  const handleClose = () => setOpen(false);
-
   return (
     <div className="min-h-screen bg-black pt-6 px-4 md:px-6 xl:px-12">
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert
-          severity="success"
-          variant="filled"
-          sx={{
-            width: 450,
-            borderRadius: 3,
-            fontSize: "15px",
-            fontWeight: 600,
-            py: 1,
-            px: 2,
-          }}
-        >
-          Post uploaded successfully!
-        </Alert>
-      </Snackbar>
       <div className="mx-auto max-w-4xl">
         <div className="space-y-6">
           <div className="rounded-4xl border border-gray-700 bg-[#0f0f0f] p-6 shadow-xl shadow-gray-900/10 md:flex md:items-end md:justify-between md:gap-6">
@@ -90,7 +67,7 @@ export default function Home() {
             >
               Refresh feed
             </button>
-            <button onClick={HandleSnackbar}>Click</button>
+           
           </div>
           {isRefreshing && (
             <div className="flex justify-center items-center">
