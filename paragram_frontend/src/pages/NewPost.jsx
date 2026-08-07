@@ -10,8 +10,6 @@ export default function NewPost({ onSubmit }) {
 
   const HandleSubmit = () => {};
 
-  const curent_char = 0;
-  const max_chars = 500;
 
   return (
     <div className="min-h-screen bg-black p-4 flex flex-col">
@@ -34,7 +32,6 @@ export default function NewPost({ onSubmit }) {
               value={text}
               autoFocus
               onChange={HandleChange}
-              maxLength={max_chars}
               placeholder="Write your thoughts here. Share honestly. Be yourself."
               className="w-full bg-[#0f0f0f] border border-gray-700 rounded-lg px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 transition-all resize-none h-40 font-medium leading-relaxed"
             />
