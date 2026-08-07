@@ -19,7 +19,7 @@ export default function Login() {
   const { logged_in, setLoggedIn, token, setToken, username, setUsername } =
     useContext(AuthContext);
   // ===== context ======
-
+  // console.log(logged_in);
   //  ===== hooks =====
   const navigate = useNavigate();
   //  ===== hooks =====

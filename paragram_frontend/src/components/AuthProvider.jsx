@@ -14,10 +14,12 @@ const AuthProvider = ({ children }) => {
     } else {
       setLoggedIn(false);
     }
-  }, [token]);
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ token, setToken, logged_in, setLoggedIn, username, setUsername }}>
+    <AuthContext.Provider
+      value={{ token, setToken, logged_in, setLoggedIn, username, setUsername }}
+    >
       {children}
     </AuthContext.Provider>
   );

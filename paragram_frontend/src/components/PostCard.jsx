@@ -41,9 +41,6 @@ export default function PostCard({ post }) {
     }
   };
 
-useEffect(()=> {
-  console.log(post)
-}, [])
 
   const GetPostId = (e) => {
     console.log(e.target);

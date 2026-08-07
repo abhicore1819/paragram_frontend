@@ -1,14 +1,68 @@
-import { useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { TriangleAlert } from "lucide-react";
-export default function NewPost({ onSubmit }) {
-  const [text, setText] = useState("");
-  const [isdisable, setDisable] = useState(true);
+import SnackbarMessage from "../components/snackbar/SnackBarMessage";
+import AddPost from "../service/uploads/NewPost";
+import { AuthContext } from "../components/AuthProvider";
 
+export default function NewPost({ onSubmit }) {
+  // ===== State variables =====
+  const [text, setText] = useState("");
+  const [open, setOpen] = useState(false);
+  const [isdisable, setDisable] = useState(true);
+  const [state_msg, setStateMsg] = useState("");
+  // ===== State variables =====
+
+  // ===== Auth context =====
+  const { token, setToken } = useContext(AuthContext);
+  // ===== Auth context =====
+
+  // Handles textarea input changes
   const HandleChange = (e) => {
+    // Update textarea value and enable the post button
     (setText(e.target.value), setDisable(false));
   };
 
-  const HandleSubmit = () => {};
+  // Sends the post data to the backend
+  const AddPostHandler = async () => {
+    console.log(text, token);
+
+    // Call API to create a new post
+     const resposne = await AddPost(text, token);
+  };
+
+  // Handles form submission
+  const HandleSubmit = (e) => {
+    e.preventDefault();
+
+    // Prevent empty or whitespace-only posts
+    if (text.trim().length === 0) {
+      setOpen(true);
+      setStateMsg("warning");
+      setText("");
+
+      // Hide warning snackbar after 3 seconds
+      setTimeout(() => {
+        setOpen(false);
+      }, 3000);
+    } else {
+      // Upload the post
+      AddPostHandler();
+
+      console.log("this time user typed something");
+
+      // Reset textarea
+      setText("");
+
+      // Show success snackbar
+      setOpen(true);
+      setStateMsg("success");
+
+      // Hide success snackbar after 3 seconds
+      setTimeout(() => {
+        setOpen(false);
+      }, 3000);
+    }
+  };
 
 
   return (
@@ -40,27 +94,29 @@ export default function NewPost({ onSubmit }) {
                 {/* {charCount} / {maxChars} characters */}
               </p>
             </div>
-          </div>
 
-          <div className="my-8 space-y-3">
-            <button
-              // disabled={}
-              className={
-                isdisable
-                  ? "w-full transition-all duration-300 bg-gray-700 text-black font-bold py-4 rounded-lg text-lg"
-                  : "w-full bg-white text-black font-bold py-4 rounded-lg text-lg"
-              }
-            >
-              Post
-            </button>
-            <p className="text-center text-xs text-slate-500">
-              Your posts will be shared with the community. Stay respectful.
-            </p>
+            <div className="my-8 space-y-3">
+              {/* Submit button */}
+              <button
+                onClick={HandleSubmit}
+                className={
+                  isdisable
+                    ? "w-full transition-all duration-300 bg-gray-700 text-black font-bold py-4 rounded-lg text-lg"
+                    : "w-full bg-white text-black font-bold py-4 rounded-lg text-lg"
+                }
+              >
+                Post
+              </button>
+
+              {/* Community guideline message */}
+              <p className="text-center text-xs text-slate-500">
+                Your posts will be shared with the community. Stay respectful.
+              </p>
+            </div>
           </div>
-        </div>
+        </form>
+        {/* ===== Post form ===== */}
       </div>
     </div>
   );
 }
-
-// 
