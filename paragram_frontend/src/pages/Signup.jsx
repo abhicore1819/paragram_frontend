@@ -16,7 +16,8 @@ export default function Signup() {
   const [is_loading, setLoading] = useState(false);
   const [ui_msg, setUIMsg] = useState("");
   const [show_popup, setShowpopup] = useState(false);
-  const { logged_in, setLoggedIn, token, setToken, username, setUsername } = useContext(AuthContext);
+  const { logged_in, setLoggedIn, token, setToken, username, setUsername } =
+    useContext(AuthContext);
   //  ===== states =====
 
   // ==== hooks =====
@@ -58,20 +59,20 @@ export default function Signup() {
     if (signup_status === "signedup") {
       const cookie_token = await LoginUser(form);
       if (cookie_token) {
-        setToken(cookie_token)
-        setUsername(form.username)
+        setLoggedIn(true);
+        setToken(cookie_token);
+        setUsername(form.username);
         setShowpopup(true);
-        // toast.success("Logged in successfull");
+        toast.success("Logged in successfull");
         setTimeout(() => {
           navigate("/");
         }, 3000);
       }
-
     } else {
       setErr(true);
       setUIMsg("Something went wrong. try again later!");
-      setLoading(false)
-      setDisabled(false)
+      setLoading(false);
+      setDisabled(false);
     }
   };
   //  ===== handles login response =====
@@ -132,7 +133,7 @@ export default function Signup() {
         setLoading(false);
         setDisabled(false);
         setErr(true);
-        setUIMsg("Something went wrong")
+        setUIMsg("Something went wrong");
         break;
 
       default:
@@ -209,7 +210,7 @@ export default function Signup() {
                   className="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all text-sm pr-10"
                 />
                 <button
-                type="button"
+                  type="button"
                   onClick={() => setShowPassword(!show_password)}
                   className="absolute right-3 top-1/2 -translate-y-1/2"
                 >
@@ -233,7 +234,7 @@ export default function Signup() {
                   className="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all text-sm pr-10"
                 />
                 <button
-                type="button"
+                  type="button"
                   onClick={() => setShowPassword(!show_password)}
                   className="absolute right-3 top-1/2 -translate-y-1/2"
                 >

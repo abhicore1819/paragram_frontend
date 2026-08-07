@@ -105,7 +105,7 @@ export default function Profile() {
                 {/* Statistics */}
               </div>
               <div className="grid grid-cols-3 gap-3 ">
-                <div className="rounded-2xl md:flex md:justify-center gap-2 text-center p-4">
+                <div className="rounded-2xl md:flex md:justify-center  gap-2 text-center p-4">
                   <p className=" text-2xl font-black text-gray-100">
                     {profile.posts}
                   </p>
@@ -113,7 +113,7 @@ export default function Profile() {
                     posts
                   </p>
                 </div>
-                <div className="rounded-2xl md:flex md:justify-center gap-2 text-center p-4">
+                <div className="rounded-2xl md:flex md:justify-center  gap-2 text-center p-4">
                   <p className=" text-2xl font-black text-gray-100">
                     {profile.following}
                   </p>
