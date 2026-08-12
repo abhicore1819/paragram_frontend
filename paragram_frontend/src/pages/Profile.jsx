@@ -4,6 +4,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import {
+  UserRound,
   ArrowRight,
   HelpCircle,
   LockIcon,
@@ -13,7 +14,7 @@ import {
   SettingsIcon,
   Users,
 } from "lucide-react";
-import FetchProfile from "../service/FetchProfile";
+import { FetchProfile, EditProfile } from "../service/FetchProfile";
 import { useContext, useEffect } from "react";
 import { FormatJoinDate } from "../calculations/FormatTime";
 import { AuthContext } from "../components/AuthProvider";
@@ -34,10 +35,13 @@ export default function Profile() {
 
   //  ----- states -----
   const [logout_popup, setLogoutPopup] = useState(false);
-  4;
+  const [edit, setEdit] = useState(false);
   const [open, setOpen] = useState(false);
+  const [disable, setDisable] = useState(true);
+  const [state_message, setSatateMessage] = useState("");
   const [profile, setProfile] = useState({
     username: "",
+    name: "",
     joined_at: "",
     followers: "",
     following: "",
@@ -50,6 +54,7 @@ export default function Profile() {
     const res = await FetchProfile(token);
     setProfile({
       username: res.username,
+      name: res.name,
       joined_at: res.joined_at,
       posts: res.total_posts,
       followers: res.followers,
@@ -65,19 +70,6 @@ export default function Profile() {
   };
   // ===== displays the logout pop-up =====
 
-  const Logout = async () => {
-    const response = await LogoutUser(token);
-    if (response) {
-      toast.success("user logged out");
-      setTimeout(() => {
-        setLoggedIn(false);
-        navigate("/login");
-      }, 3000);
-    } else {
-      toast.warn("something went wrong while logging out. try again later");
-    }
-  };
-
   // ===== calls the profile setter fn initial load ======
   useEffect(() => {
     ProfileReciever();
@@ -87,26 +79,77 @@ export default function Profile() {
   // ===== sets the pop-message state =====
   const Notify = () => {
     setOpen(true);
+    setSatateMessage("info");
     setTimeout(() => {
       setOpen(false);
     }, 3000);
   };
   // ===== sets the pop-message state =====
 
+  // ===== edits the profile ======
+  const profileEditHandler = () => {
+    if (!edit) {
+      setEdit(true);
+      setDisable(false);
+    }
+  };
+  // ===== edits the profile ======
+
+  const handleProfileChange = (e) => {
+    const { name, value } = e.target;
+
+    setProfile((prevData) => {
+      return { ...prevData, [name]: value };
+    });
+  };
+
+  // ===== save the profile changes ======
+  const profileChangeSaver = async () => {
+    if (edit) {
+      setEdit(false);
+      setOpen(false);
+    }
+    const saved_profile = await EditProfile(token, profile["name"]);
+    setOpen(true);
+    setSatateMessage("success")
+    setDisable(true);
+  };
+  // ===== save the profile changes ======
+
   return (
     <div className="min-h-screen bg-black pt-6 px-4 md:px-6 xl:px-12">
-      <ToastContainer autoClose={3000} position="top-center" />
       {open ? (
-        <SnackbarMessage
-          openstatus={open}
-          hideduration={3000}
-          severity={"info"}
-          variant={"filled"}
-          display_message={"This feature is coming soon"}
-        />
+        state_message === "info" ? (
+          <SnackbarMessage
+            openstatus={open}
+            hideduration={3000}
+            severity={state_message}
+            variant={"filled"}
+            display_message={"This feature is coming soon"}
+          />
+        ) : (
+          ""
+        )
       ) : (
         ""
       )}
+
+      {open ? (
+        state_message === "success" ? (
+          <SnackbarMessage
+            openstatus={open}
+            hideduration={3000}
+            severity={state_message}
+            variant={"filled"}
+            display_message={"Changes saved"}
+          />
+        ) : (
+          ""
+        )
+      ) : (
+        ""
+      )}
+
       <div className="mx-auto max-w-4xl">
         <div className="space-y-6 pb-6">
           {/* Header */}
@@ -128,26 +171,61 @@ export default function Profile() {
           <div className="grid gap-4 md:grid-cols-2">
             {/* User Card */}
             <div className="rounded-3xl border border-gray-700 bg-[#0f0f0f] p-6 shadow-xl shadow-gray-900/10">
-              <div className="text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-gray-400 to-gray-300 text-2xl font-bold text-black shadow-lg shadow-gray-400/30">
-                  {profile.username ? profile.username[0].toUpperCase() : ""}
-                </div>
-                <p className="text-lg font-semibold text-gray-100 mb-1">
+              <div className="flex flex-col items-center">
+                <p className="text-xl font-semibold text-gray-100 mb-3">
                   {profile.username ? profile.username : ""}
                 </p>
+
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full  text-2xl font-bold text-black bg-gray-400">
+                  {/* {profile.username ? profile.username[0].toUpperCase() : ""} */}
+                  <UserRound />
+                </div>
 
                 <p className="text-sm font-semibold text-gray-100 mb-1">
                   {profile.name ? profile.name : ""}
                 </p>
+
                 <p className="text-xs text-gray-500 uppercase tracking-wider">
                   joined{" "}
                   {profile.joined_at ? FormatJoinDate(profile.joined_at) : ""}
                 </p>
+                <div className="flex justify-center gap-2 w-full">
+                  <button
+                    onClick={profileEditHandler}
+                    className="border border-gray-600 rounded-lg p-2 w-1/2 mt-4 cursor-pointer"
+                  >
+                    Edit profile
+                  </button>
+
+                  <button
+                    disabled={disable}
+                    onClick={profileChangeSaver}
+                    className="bg-white text-gray-800  rounded-lg p-2 w-1/2 mt-4 cursor-pointer"
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </div>
+
+              <div className="text-center  py-4">
+                {edit ? (
+                  <input
+                    type="text"
+                    name="name"
+                    value={profile["name"]}
+                    placeholder="set your name"
+                    className="p-2 border border-gray-600 rounded-lg w-full"
+                    onChange={handleProfileChange}
+                    autoFocus
+                  />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
 
             {/* Stats Card */}
-            <div className="rounded-3xl border border-gray-700 bg-[#0f0f0f] p-6 shadow-xl shadow-gray-900/10">
+            <div className="rounded-3xl border flex items-center border-gray-700 bg-[#0f0f0f] p-6 shadow-xl shadow-gray-900/10">
               <div className="mb-3 text-xs uppercase tracking-[0.24em] text-gray-400">
                 {/* Statistics */}
               </div>
