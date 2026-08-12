@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { CreateLike, RemoveLike } from "../service/interactions/Likes";
 import FormatTime from "../calculations/FormatTime";
 import { AuthContext } from "./AuthProvider";
-export default function PostCard({ post }) {
+export default function PostCard({ post, render }) {
   const { token, setToken } = useContext(AuthContext);
   const navigate = useNavigate();
   const [is_liked, setIsLiked] = useState(post.is_liked);

@@ -4,22 +4,30 @@ import SnackbarMessage from "../components/snackbar/SnackBarMessage";
 import AddPost from "../service/uploads/NewPost";
 import { AuthContext } from "../components/AuthProvider";
 export default function NewPost({ onSubmit }) {
+  // ----- states -----
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
   const [isdisable, setDisable] = useState(true);
   const [state_msg, setStateMsg] = useState("");
+  // ----- states -----
+
   // ===== context data =====
   const { token, setToken } = useContext(AuthContext);
   // ===== context data =====
+
+  // ===== sets the input's state on change =====
   const HandleChange = (e) => {
     (setText(e.target.value), setDisable(false));
   };
+  // ===== sets the input's state on change =====
 
+  //  ===== recieves the API response =====
   const AddPostHandler = async () => {
-    console.log(text, token);
     const resposne = await AddPost(text, token);
   };
+  //  ===== recieves the API response =====
 
+  //  ===== handles the form submission =====
   const HandleSubmit = (e) => {
     e.preventDefault();
     if (text.trim().length === 0) {
@@ -31,7 +39,6 @@ export default function NewPost({ onSubmit }) {
       }, 3000);
     } else {
       AddPostHandler();
-      console.log("this time user typed something");
       setText("");
       setOpen(true);
       setStateMsg("success");
@@ -40,6 +47,7 @@ export default function NewPost({ onSubmit }) {
       }, 3000);
     }
   };
+  //  ===== handles the form submission =====
 
   return (
     <div className="min-h-screen bg-black p-4 flex flex-col">
