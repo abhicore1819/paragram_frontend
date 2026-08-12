@@ -7,6 +7,7 @@ const AuthProvider = ({ children }) => {
   const [token_key, token_val] = spllited_token;
   const [token, setToken] = useState(token_val);
   const [logged_in, setLoggedIn] = useState(false);
+  const [is_clicked, setClicked] = useState("");
 
   useEffect(() => {
     if (token) {
@@ -18,7 +19,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ token, setToken, logged_in, setLoggedIn, username, setUsername }}
+      value={{ token, setToken, logged_in, setLoggedIn, username, setUsername, is_clicked, setClicked }}
     >
       {children}
     </AuthContext.Provider>

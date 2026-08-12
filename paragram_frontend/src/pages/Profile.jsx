@@ -1,9 +1,15 @@
-import { UNSAFE_DataRouterStateContext, useNavigate } from "react-router-dom";
+import {
+  renderMatches,
+  UNSAFE_DataRouterStateContext,
+  useNavigate,
+} from "react-router-dom";
 import {
   ArrowRight,
   HelpCircle,
   LockIcon,
   LogOut,
+  LucideFolderOutput,
+  Pen,
   SettingsIcon,
   Users,
 } from "lucide-react";
@@ -14,11 +20,22 @@ import { AuthContext } from "../components/AuthProvider";
 import LogoutUser from "../service/LogoutUser";
 import LogoutConfirmation from "../components/LogoutConfirmation";
 import { toast, ToastContainer } from "react-toastify";
+import SnackbarMessage from "../components/snackbar/SnackBarMessage";
 import { useState } from "react";
 export default function Profile() {
-  const { logged_in, setLoggedIn, token, setToken } = useContext(AuthContext);
+  // ----- context data -----
+  const { logged_in, setLoggedIn, token, setToken, is_clicked, setClicked } =
+    useContext(AuthContext);
+  // ----- context data -----
+
+  // ----- hooks ------
   const navigate = useNavigate();
+  // ----- hooks ------
+
+  //  ----- states -----
   const [logout_popup, setLogoutPopup] = useState(false);
+  4;
+  const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState({
     username: "",
     joined_at: "",
@@ -26,7 +43,9 @@ export default function Profile() {
     following: "",
     posts: "",
   });
+  //  ----- states -----
 
+  //  ===== recieves the API response =====
   const ProfileReciever = async () => {
     const res = await FetchProfile(token);
     setProfile({
@@ -38,10 +57,13 @@ export default function Profile() {
     });
     setToken(token);
   };
+  //  ===== recieves the API response =====
 
+  // ===== displays the logout pop-up =====
   const LogoutPopup = () => {
     setLogoutPopup(true);
   };
+  // ===== displays the logout pop-up =====
 
   const Logout = async () => {
     const response = await LogoutUser(token);
@@ -56,15 +78,35 @@ export default function Profile() {
     }
   };
 
+  // ===== calls the profile setter fn initial load ======
   useEffect(() => {
     ProfileReciever();
   }, []);
+  // ===== calls the profile setter fn on initial load ======
 
-  const Notify = () => toast.warn("This feature is coming soon");
+  // ===== sets the pop-message state =====
+  const Notify = () => {
+    setOpen(true);
+    setTimeout(() => {
+      setOpen(false);
+    }, 3000);
+  };
+  // ===== sets the pop-message state =====
 
   return (
     <div className="min-h-screen bg-black pt-6 px-4 md:px-6 xl:px-12">
       <ToastContainer autoClose={3000} position="top-center" />
+      {open ? (
+        <SnackbarMessage
+          openstatus={open}
+          hideduration={3000}
+          severity={"info"}
+          variant={"filled"}
+          display_message={"This feature is coming soon"}
+        />
+      ) : (
+        ""
+      )}
       <div className="mx-auto max-w-4xl">
         <div className="space-y-6 pb-6">
           {/* Header */}
@@ -88,13 +130,18 @@ export default function Profile() {
             <div className="rounded-3xl border border-gray-700 bg-[#0f0f0f] p-6 shadow-xl shadow-gray-900/10">
               <div className="text-center">
                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-gray-400 to-gray-300 text-2xl font-bold text-black shadow-lg shadow-gray-400/30">
-                  A
+                  {profile.username ? profile.username[0].toUpperCase() : ""}
                 </div>
                 <p className="text-lg font-semibold text-gray-100 mb-1">
                   {profile.username ? profile.username : ""}
                 </p>
+
+                <p className="text-sm font-semibold text-gray-100 mb-1">
+                  {profile.name ? profile.name : ""}
+                </p>
                 <p className="text-xs text-gray-500 uppercase tracking-wider">
-                 joined {profile.joined_at ? FormatJoinDate(profile.joined_at) : ""}
+                  joined{" "}
+                  {profile.joined_at ? FormatJoinDate(profile.joined_at) : ""}
                 </p>
               </div>
             </div>
@@ -162,12 +209,20 @@ export default function Profile() {
 
           {/* Logout Button */}
           <button
-            onClick={Logout}
+            onClick={LogoutPopup}
             className="bg-[#ffffff] border rounded-lg  border-gray-700 hover:bg-[#0f0f0f] px-4 py-3 text-gray-700 hover:text-gray-100 font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-sm md:text-base"
           >
             <LogOut className="h-4 w-4" />
             Logout
           </button>
+
+          {/* renders the logout confirmation component */}
+          {logout_popup ? (
+            <LogoutConfirmation onCancel={() => setLogoutPopup(false)} />
+          ) : (
+            ""
+          )}
+          {/* renders the logout confirmation component */}
 
           {/* Footer Info */}
           <div className="text-center mb-5 space-y-3">
@@ -183,7 +238,6 @@ export default function Profile() {
               </p>
             </div>
           </div>
-          {/* {logout_popup ? <LogoutConfirmation/> : ""} */}
         </div>
       </div>
     </div>
