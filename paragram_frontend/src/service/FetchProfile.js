@@ -7,11 +7,28 @@ const FetchProfile = async (token) => {
       headers: { Authorization: `Token ${token}` },
     });
     const profile_response = fetch_profile.data;
-    return profile_response
-    console.log("profile data:-", profile_response);
+    return profile_response;
   } catch (error) {
     console.warn("Error occured:-", error);
+
+    return ("error", error);
   }
 };
 
-export default FetchProfile;
+const EditProfile = async (token, data) => {
+  console.log("payload:-", data)
+  const EDIT_PROFILE_URL = import.meta.env.VITE_EDIT_PROFILE;
+  try {
+    const edit_profile = await axios.patch(EDIT_PROFILE_URL, {name: data}, {
+      headers: { Authorization: `Token ${token}` },
+    });
+    const edit_profile_response = edit_profile.data;
+    return edit_profile_response;
+  } catch (error) {
+    console.warn("Error occured:-", error);
+
+    return ("error", error);
+  }
+};
+
+export { FetchProfile, EditProfile };
