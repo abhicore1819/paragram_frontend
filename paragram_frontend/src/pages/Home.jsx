@@ -67,7 +67,6 @@ export default function Home() {
             >
               Refresh feed
             </button>
-           
           </div>
           {isRefreshing && (
             <div className="flex justify-center items-center">

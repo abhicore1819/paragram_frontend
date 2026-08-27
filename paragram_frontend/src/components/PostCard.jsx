@@ -6,8 +6,9 @@ import {
   NavigationOff,
   Percent,
   ListOrdered,
+  UserRound,
 } from "lucide-react";
-import user_pfp from "../assets/user_pfp.jpeg";
+// import user_pfp from "../assets/user_pfp.jpeg";
 import { useNavigate } from "react-router-dom";
 import { CreateLike, RemoveLike } from "../service/interactions/Likes";
 import FormatTime from "../calculations/FormatTime";
@@ -32,7 +33,6 @@ export default function PostCard({ post, render }) {
     }
   };
 
-
   const HandleFollow = () => {
     if (is_followed === false) {
       setIsFollowed(true);
@@ -40,7 +40,6 @@ export default function PostCard({ post, render }) {
       setIsFollowed(false);
     }
   };
-
 
   const GetPostId = (e) => {
     console.log(e.target);
@@ -54,7 +53,18 @@ export default function PostCard({ post, render }) {
         <div className="flex items-center gap-2">
           <div className=" flex items-center justify-center">
             {/* {post.username.charAt(0).toUpperCase()} */}
-            <img className=" w-10 h-10  rounded-full" src={user_pfp} alt="" />
+            {/* {<img
+              className=" w-10 h-10  rounded-full"
+              src={user_pfp}
+              alt=""
+            /> ? (
+              <img className=" w-10 h-10  rounded-full" src={user_pfp} alt="" />
+            ) : (
+              <UserRound />
+            )} */}
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-400 text-2xl font-bold text-black">
+<UserRound/>
+            </div>
           </div>
           <div className="">
             <p className="text-sm font-semibold text-white">{post.username}</p>
