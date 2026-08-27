@@ -145,6 +145,7 @@ export default function Profile() {
       )}
 
       <div className="mx-auto max-w-4xl">
+        {console.log("prfile data:-", profile)}
         <div className="space-y-6 pb-6">
           {/* Header */}
           <div className="rounded-3xl border border-gray-700 bg-[#0f0f0f] p-6 shadow-xl shadow-gray-900/10">
