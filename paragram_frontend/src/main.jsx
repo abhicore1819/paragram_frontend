@@ -24,6 +24,7 @@ import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import PostCard from "./components/PostCard.jsx";
 import AuthProvider from "./components/AuthProvider.jsx";
+import EditProfile from "./pages/EditProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectRoutes>
             <NewPost />
+          </ProtectRoutes>
+        ),
+      },
+      {
+        path: "editprofile",
+        element: (
+          <ProtectRoutes>
+            <EditProfile />
           </ProtectRoutes>
         ),
       },

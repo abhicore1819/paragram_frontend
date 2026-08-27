@@ -13,8 +13,11 @@ import {
   Pen,
   SettingsIcon,
   Users,
+  PlusIcon,
+  FileKey,
+  FileEdit,
 } from "lucide-react";
-import { FetchProfile, EditProfile } from "../service/FetchProfile";
+import { FetchProfile, UpdateProfile } from "../service/FetchProfile";
 import { useContext, useEffect } from "react";
 import { FormatJoinDate } from "../calculations/FormatTime";
 import { AuthContext } from "../components/AuthProvider";
@@ -25,7 +28,7 @@ import SnackbarMessage from "../components/snackbar/SnackBarMessage";
 import { useState } from "react";
 export default function Profile() {
   // ----- context data -----
-  const { logged_in, setLoggedIn, token, setToken, is_clicked, setClicked } =
+  const { logged_in, setLoggedIn, token, setToken, username, setUsername } =
     useContext(AuthContext);
   // ----- context data -----
 
@@ -39,9 +42,11 @@ export default function Profile() {
   const [open, setOpen] = useState(false);
   const [disable, setDisable] = useState(true);
   const [state_message, setSatateMessage] = useState("");
+  const [file, setFile] = useState(null);
   const [profile, setProfile] = useState({
     username: "",
     name: "",
+    bio: "",
     joined_at: "",
     followers: "",
     following: "",
@@ -55,6 +60,7 @@ export default function Profile() {
     setProfile({
       username: res.username,
       name: res.name,
+      bio: res.bio,
       joined_at: res.joined_at,
       posts: res.total_posts,
       followers: res.followers,
@@ -91,6 +97,7 @@ export default function Profile() {
     if (!edit) {
       setEdit(true);
       setDisable(false);
+      navigate("/editprofile");
     }
   };
   // ===== edits the profile ======
@@ -102,19 +109,6 @@ export default function Profile() {
       return { ...prevData, [name]: value };
     });
   };
-
-  // ===== save the profile changes ======
-  const profileChangeSaver = async () => {
-    if (edit) {
-      setEdit(false);
-      setOpen(false);
-    }
-    const saved_profile = await EditProfile(token, profile["name"]);
-    setOpen(true);
-    setSatateMessage("success")
-    setDisable(true);
-  };
-  // ===== save the profile changes ======
 
   return (
     <div className="min-h-screen bg-black pt-6 px-4 md:px-6 xl:px-12">
@@ -175,12 +169,21 @@ export default function Profile() {
                 <p className="text-xl font-semibold text-gray-100 mb-3">
                   {profile.username ? profile.username : ""}
                 </p>
-
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full  text-2xl font-bold text-black bg-gray-400">
-                  {/* {profile.username ? profile.username[0].toUpperCase() : ""} */}
-                  <UserRound />
+                <div className="relative mx-auto mb-4 h-16 w-16">
+                  {/* Profile picture */}
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-400 text-2xl font-bold text-black">
+                    {file ? (
+                      <img
+                        src={file}
+                        alt=""
+                        className="rounded-full h-full w-full object-cover"
+                      />
+                    ) : (
+                      <UserRound />
+                    )}
+                  </div>
+                 
                 </div>
-
                 <p className="text-sm font-semibold text-gray-100 mb-1">
                   {profile.name ? profile.name : ""}
                 </p>
@@ -189,20 +192,16 @@ export default function Profile() {
                   joined{" "}
                   {profile.joined_at ? FormatJoinDate(profile.joined_at) : ""}
                 </p>
+
+                <p className="text-center text-gray-300 my-2 ">
+                  {profile['bio']}
+                </p>
                 <div className="flex justify-center gap-2 w-full">
                   <button
                     onClick={profileEditHandler}
-                    className="border border-gray-600 rounded-lg p-2 w-1/2 mt-4 cursor-pointer"
+                    className="border border-gray-600 rounded-lg p-2 w-full mt-4 cursor-pointer"
                   >
                     Edit profile
-                  </button>
-
-                  <button
-                    disabled={disable}
-                    onClick={profileChangeSaver}
-                    className="bg-white text-gray-800  rounded-lg p-2 w-1/2 mt-4 cursor-pointer"
-                  >
-                    Save changes
                   </button>
                 </div>
               </div>
